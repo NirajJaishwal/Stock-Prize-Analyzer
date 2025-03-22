@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Perdiction</title>
+    <!-- Bootstrap 4 CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2QfP7X1hA7Zx5Faf6f6C6wrpOAmwRHt6EYp2Xhfa48LD8nv9a4fZng2M62Vd" crossorigin="anonymous">
+    <script src="https://cdn.plot.ly/plotly-5.0.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding-top: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .form-control, .form-select {
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #b3c4d6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        small {
+            color: #6c757d;
+        }
+
+        .prediction {
+            background-color: #e9f7fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .prediction h2 {
+            color: #007bff;
+        }
+
+        .prediction p {
+            font-size: 18px;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Stock Prize Analyzer</h1>
+    <h2>Select the date Range and Interval</h2>
+    <form action="/predict" method="post" id="stockForm">
+
+        <label for="stockSymbol">Stock Symbol:</label>
+        <input type="text" id="stockSymbol" name="stockSymbol" required><br><br>
+        <small>Example: AAPL, MSFT, GOOGL, TSLA</small><br><br>
+
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required><br><br>
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required><br><br>
+
+        <label for="interval">Interval:</label>
+        <select id="interval" name="interval">
+            <option value="15m">15min</option>
+            <option value="30m">30min</option>
+            <option value="60m">60min</option>
+            <option value="1d">1day</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if graph_html %}
+        <div>
+            <h2>Stock Price Graph</h2>
+            {{ graph_html | safe }}
+        </div>
+    {% endif %}
+    <br><br>
+
+    {% if last_prediction %}
+        <h2>Prediction</h2>
+        <p>Next Closing Price will be: {{ last_prediction }}</p>
+    {% endif %}
+</body>
+</html>
