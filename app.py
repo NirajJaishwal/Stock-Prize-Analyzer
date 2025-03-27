@@ -8,6 +8,7 @@ from steps.ingest_data import download_data
 from steps.draw_graph import draw_graph
 from steps.clean_data import cleanData
 from steps.create_sequence import create_sequence
+from steps.predict_data import predict_price_direction
 
 app = Flask(__name__)
 
@@ -51,18 +52,8 @@ def predict():
     # create sequence of data
     sequences = create_sequence(df_scaled.values, 60)
 
-    # Function to predict if the price will go up or down
-    def predict_price_direction(sequence):
-        # Ensure data is a numpy array and reshape it for LSTM input (samples, timesteps, features)
-        sequence = sequence.reshape(1, sequence.shape[0], sequence.shape[1])
-        # Get the prediction from the LSTM model (sigmoid output)
-        prediction = model.predict(sequence)
-        # Convert to direction
-        direction = 'High' if prediction > 0.5 else 'Low'
-        return direction
-    
     # first_pred = predict_price_direction(sequences[0])
-    last_pred = predict_price_direction(sequences[-1])
+    last_pred = predict_price_direction(model, sequences[-1])
 
     return render_template('index.html', 
                             last_prediction=last_pred,
