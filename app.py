@@ -13,7 +13,7 @@ from steps.predict_data import predict_price_direction
 app = Flask(__name__)
 
 # Load the model
-model = load_model('lstm_model.h5', custom_objects={'Orthogonal': Orthogonal})
+model = load_model('/model/lstm_model.h5', custom_objects={'Orthogonal': Orthogonal})
 
 @app.route('/')
 def home():
