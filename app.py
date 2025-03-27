@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template
-import yfinance as yf
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
@@ -32,7 +31,7 @@ def predict():
     if not start_date or not end_date or not interval or not stock:
         return jsonify({'error': 'All fields are required'}),400
 
-    # load the data
+    # load the data from ingest_data
     data = download_data(stock, start_date, end_date, interval)
 
     if data.empty:
