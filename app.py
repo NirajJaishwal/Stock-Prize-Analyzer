@@ -9,7 +9,7 @@ from keras.initializers import Orthogonal
 import plotly.express as px
 import plotly.io as pio
 
-from steps.clean_data import download_data
+from steps.ingest_data import download_data
 
 app = Flask(__name__)
 
