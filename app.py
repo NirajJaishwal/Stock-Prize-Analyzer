@@ -5,10 +5,9 @@ from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 from keras.models import load_model
 from keras.initializers import Orthogonal
-import plotly.express as px
-import plotly.io as pio
 
 from steps.ingest_data import download_data
+from steps.draw_graph import draw_graph
 
 app = Flask(__name__)
 
@@ -37,9 +36,8 @@ def predict():
     if data.empty:
         return jsonify({'error': 'No data found for the given stock'}), 400
     
-    # plot the closing price
-    fig = px.line(data, x=data.index, y=data['Close'].values.flatten(), title='Closing Price of ' + stock)
-    graph = pio.to_html(fig, full_html=False)
+    # draw the graph of closing price
+    graph = draw_graph(data, stock)
     
     # save into csv file it the file name exist replace it
     data.to_csv('data.csv')
