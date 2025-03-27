@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
 from keras.models import load_model
 from keras.initializers import Orthogonal
 
@@ -46,18 +45,7 @@ def predict():
     data = pd.read_csv('data.csv')  
 
     # clean the data
-    processed_data = cleanData(data)
-
-    # features
-    features = ['Close', 'Open', 'High', 'Low', 'Volume', 'Returns', 'RSI', 'MACD', 'Upper Band', 'Lower Band', 'ATR']
-
-    # define a scalar
-    scaler = MinMaxScaler(feature_range=(0, 1))
-    scaled_data = scaler.fit_transform(processed_data[features])
-
-    df_scaled = pd.DataFrame(scaled_data, columns=features, index=processed_data.index)
-
-    print(df_scaled.shape)
+    df_scaled = cleanData(data)
 
     # define a create_sequence for 60 day
     def create_sequence(data, seq_length=60):

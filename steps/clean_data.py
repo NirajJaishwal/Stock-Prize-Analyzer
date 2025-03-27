@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import logging
+from sklearn.preprocessing import MinMaxScaler
 
 # clean the data
 def cleanData(data):
@@ -47,7 +48,16 @@ def cleanData(data):
         data['TR'] = np.maximum(high_low, np.maximum(high_close, low_close))
         data['ATR'] = data['TR'].rolling(window=14).mean()
         processed_data = data.dropna()
-        return processed_data
+        # features
+        features = ['Close', 'Open', 'High', 'Low', 'Volume', 'Returns', 'RSI', 'MACD', 'Upper Band', 'Lower Band', 'ATR']
+
+        # define a scalar
+        scaler = MinMaxScaler(feature_range=(0, 1))
+        scaled_data = scaler.fit_transform(processed_data[features])
+
+        df_scaled = pd.DataFrame(scaled_data, columns=features, index=processed_data.index)
+
+        return df_scaled
     except Exception as e:
         logging.error(f'Error in cleanData: {e}')
         return None
