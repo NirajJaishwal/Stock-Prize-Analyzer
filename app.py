@@ -9,6 +9,8 @@ from keras.initializers import Orthogonal
 import plotly.express as px
 import plotly.io as pio
 
+from steps.clean_data import download_data
+
 app = Flask(__name__)
 
 # Load the model
@@ -30,8 +32,8 @@ def predict():
     if not start_date or not end_date or not interval or not stock:
         return jsonify({'error': 'All fields are required'}),400
 
-    # download the data
-    data = yf.download(stock, start=start_date, end=end_date, interval=interval)
+    # load the data
+    data = download_data(stock, start_date, end_date, interval)
 
     if data.empty:
         return jsonify({'error': 'No data found for the given stock'}), 400
@@ -99,8 +101,6 @@ def predict():
     df_scaled = pd.DataFrame(scaled_data, columns=features, index=processed_data.index)
 
     print(df_scaled.shape)
-
-    print("Hello World")
 
     # define a create_sequence for 60 day
     def create_sequence(data, seq_length=60):
