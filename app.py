@@ -7,6 +7,7 @@ from keras.initializers import Orthogonal
 from steps.ingest_data import download_data
 from steps.draw_graph import draw_graph
 from steps.clean_data import cleanData
+from steps.create_sequence import create_sequence
 
 app = Flask(__name__)
 
@@ -47,14 +48,8 @@ def predict():
     # clean the data
     df_scaled = cleanData(data)
 
-    # define a create_sequence for 60 day
-    def create_sequence(data, seq_length=60):
-        X = []
-        for i in range(len(data) - seq_length):
-            X.append(data[i:i + seq_length])
-        return np.array(X)
-
-    sequences = create_sequence(df_scaled.values)
+    # create sequence of data
+    sequences = create_sequence(df_scaled.values, 60)
 
     # Function to predict if the price will go up or down
     def predict_price_direction(sequence):
