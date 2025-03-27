@@ -13,3 +13,7 @@ node_modules/
 
 # Ignore data file
 data.csv
+
+__pycache__/
+*.pyc
+*.pyo
