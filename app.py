@@ -36,10 +36,10 @@ def predict():
     graph = draw_graph(data, stock)
     
     # save into csv file it the file name exist replace it
-    data.to_csv('data.csv')
+    data.to_csv('data/data.csv')
     
     # load the data
-    data = pd.read_csv('data.csv')  
+    data = pd.read_csv('data/data.csv')  
 
     # clean the data
     df_scaled = cleanData(data)
