@@ -6,8 +6,7 @@ from keras.initializers import Orthogonal
 from steps.ingest_data import download_data
 from steps.draw_graph import draw_graph
 from steps.clean_data import cleanData
-from steps.create_sequence import create_sequence
-from steps.predict_data import predict_price_direction
+from steps.predict import make_prediction
 
 app = Flask(__name__)
 
@@ -45,15 +44,14 @@ def predict():
     # clean the data
     df_scaled = cleanData(data)
 
-    # create sequence of data
-    sequences = create_sequence(df_scaled.values, 60)
+    last_pred, error_msg = make_prediction(model, df_scaled, 60)
 
-    # first_pred = predict_price_direction(sequences[0])
-    last_pred = predict_price_direction(model, sequences[-1])
-
-    return render_template('index.html', 
-                            last_prediction=last_pred,
-                            graph_html=graph)
+    if error_msg == None:
+        return render_template('index.html',
+                                last_prediction=last_pred,
+                                graph_html=graph)
+    else:
+        return render_template('error.html', error_message=error_msg)
 
 if __name__ == '__main__':
     app.run(debug=True)

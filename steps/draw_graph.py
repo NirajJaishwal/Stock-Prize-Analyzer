@@ -12,4 +12,3 @@ def draw_graph(data, stock):
     except Exception as e:
         logging.error(e)
         return jsonify({'error': 'Graph generation failed'}), 500
-        
