@@ -47,7 +47,10 @@ def predict():
     last_pred, error_msg = make_prediction(model, df_scaled, 60)
 
     if error_msg == None:
-        return render_template('index.html',
+        # return render_template('index.html',
+        #                         last_prediction=last_pred,
+        #                         graph_html=graph)
+        return render_template('result.html',
                                 last_prediction=last_pred,
                                 graph_html=graph)
     else:

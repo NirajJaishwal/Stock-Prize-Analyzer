@@ -96,18 +96,5 @@
 
         <button type="submit">Predict</button>
     </form>
-
-    {% if graph_html %}
-        <div>
-            <h2>Stock Price Graph</h2>
-            {{ graph_html | safe }}
-        </div>
-    {% endif %}
-    <br><br>
-
-    {% if last_prediction %}
-        <h2>Prediction</h2>
-        <p>Next Closing Price will be: {{ last_prediction }}</p>
-    {% endif %}
 </body>
 </html>

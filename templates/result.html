@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Prediction Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2e4761;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #085db3;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            transition: 0.3s ease-in-out;
+        }
+        h2 {
+            color: #717880;
+            font-size: 2em;
+        }
+        p {
+            color: #1f1e1e;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        .prediction {
+            background: #A7C7E7;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            color: #708090;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .graph-container {
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #A7C7E7;
+            color: #708090;
+            padding: 12px 24px;
+            text-align: center;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: 0.3s ease-in-out;
+        }
+        .button:hover {
+            background-color: #40920a;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        {% if last_prediction %}
+            <h2>Stock Price Prediction</h2>
+            <div class="prediction">Next Closing Price: {{ last_prediction }}</div>
+        {% endif %}
 
+        {% if graph_html %}
+            <div class="graph-container">
+                <h2>Stock Price Trend</h2>
+                {{ graph_html | safe }}
+            </div>
+        {% endif %}
+
+        <!-- <a href="/" class="button">Make Another Prediction</a> -->
+        <button class="button" onClick="goBack()">Back</button>
+        <button class="button" onClick="anotherPrediction()">Make Another Prediction</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        function anotherPrediction() {
+            sessionStorage.clear();
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html>
