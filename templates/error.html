@@ -1,10 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h2 {
+            color: #dc3545;
+            font-size: 2em;
+            text-align: center;
+        }
+        h3 {
+            color: #bd6009;
+            font-size: 1.2em;
+            text-align: center;
+            padding: auto;
+        }
+        p {
+            color: #6f674f;
+            text-align: center;
+            padding: auto;
+        }
+        .button {
+            display: block;
+            margin-top: 30px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h2>Error:</h2>
-    <p>{{ error_message }}</p>
+    <div class="container">
+        <h2>Error</h2>
+        <h3>{{ error_message }}</h3>
+        <p>Make sure to have a least 60 data to make prediction</p>
+        <a href="/" class="button">Go Back to Home</a>
+    </div>
 </body>
 </html>
