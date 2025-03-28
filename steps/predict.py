@@ -1,11 +1,14 @@
 import logging
 from flask import jsonify, render_template
+import pandas as pd
 
 from steps.create_sequence import create_sequence
 from steps.predict_data import predict_price_direction
 
 def make_prediction(model, data, seq_length):
     try:
+        if not isinstance(data, pd.DataFrame):
+            return None, " Error in predict.py, Data must be a pandas DataFrame"
         sequences = create_sequence(data.values, seq_length)
 
         # check if the sequence has data

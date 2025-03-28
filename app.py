@@ -42,7 +42,7 @@ def predict():
     data = pd.read_csv('data/data.csv')  
 
     # clean the data
-    df_scaled = cleanData(data)
+    df_scaled = pd.DataFrame(cleanData(data))
 
     last_pred, error_msg = make_prediction(model, df_scaled, 60)
 
