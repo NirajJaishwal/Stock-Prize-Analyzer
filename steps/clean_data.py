@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 from sklearn.preprocessing import MinMaxScaler
+from flask import jsonify
 
 # clean the data
 def cleanData(data):
@@ -60,4 +61,4 @@ def cleanData(data):
         return df_scaled
     except Exception as e:
         logging.error(f'Error in cleanData: {e}')
-        return None
+        return jsonify({'error': 'Data cleaning failed'}), 500

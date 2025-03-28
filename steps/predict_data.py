@@ -1,4 +1,5 @@
 import logging
+from flask import jsonify
 
 # Function to predict data using a trained model
 def predict_price_direction(model, sequences):
@@ -22,4 +23,4 @@ def predict_price_direction(model, sequences):
         return direction
     except Exception as e:
         logging.error(f"Error in predict_data: {e}")
-        return None
+        return jsonify({'error': 'Prediction failed'}), 500

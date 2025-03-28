@@ -1,6 +1,7 @@
 import plotly.express as px
 import plotly.io as pio
 import logging
+from flask import jsonify
 
 # Draw graph 
 def draw_graph(data, stock):
@@ -10,5 +11,5 @@ def draw_graph(data, stock):
         return graph
     except Exception as e:
         logging.error(e)
-        return "Error in drawing graph"
+        return jsonify({'error': 'Graph generation failed'}), 500
         

@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 import pandas as pd
-import numpy as np
 from keras.models import load_model
 from keras.initializers import Orthogonal
 
@@ -34,9 +33,6 @@ def predict():
     # load the data from ingest_data
     data = download_data(stock, start_date, end_date, interval)
 
-    if data.empty:
-        return jsonify({'error': 'No data found for the given stock'}), 400
-    
     # draw the graph of closing price
     graph = draw_graph(data, stock)
     

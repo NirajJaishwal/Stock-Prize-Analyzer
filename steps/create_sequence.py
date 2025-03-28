@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+from flask import jsonify
 
 # Function to create squeunce of data
 def create_sequence(data, seq_length):
