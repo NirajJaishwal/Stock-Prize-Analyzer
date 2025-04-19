@@ -8,3 +8,4 @@ yfinance==0.2.55
 scikit-learn==1.6.1       # If you're using it for ML preprocessing/modeling
 scipy==1.15.2             # Same as above
 requests==2.32.3
+plotly==6.0.1
