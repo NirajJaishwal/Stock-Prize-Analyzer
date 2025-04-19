@@ -53,5 +53,8 @@ def predict():
     else:
         return render_template('error.html', error_message=error_msg)
 
+# running the app locally
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=10000, debug=True)
+    # Only runs when executing directly with `python app.py`
+    app.run(debug=True)
+
