@@ -23,6 +23,10 @@ from tensorflow.keras.optimizers import Adam, SGD
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.callbacks import ReduceLROnPlateau
 from tensorflow.keras.optimizers import RMSprop
+from sklearn.metrics import classification_report
+from sklearn.metrics import roc_curve
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 # extract data
 df = yf.download('AAPL', start='2025-01-20', end='2025-03-10', interval='30m')
@@ -182,8 +186,6 @@ print("Validation Accuracy:", val_acc)
 # model.save('lstm_model.h5')
 # model.save("lstm_stock_model.keras")
 
-from sklearn.metrics import roc_curve
-
 y_probs = model.predict(X_val)  # Get probabilities
 fpr, tpr, thresholds = roc_curve(y_val, y_probs)
 
@@ -212,9 +214,6 @@ print("Best Threshold:", optimal_threshold)
 # print(y_pred)
 
 # draw a confusion matrix
-from sklearn.metrics import confusion_matrix
-import seaborn as sns
-
 y_pred = (model.predict(X_test) > optimal_threshold).astype(int)
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm, annot=True, fmt='d')
@@ -232,7 +231,6 @@ plt.title('Confusion Matrix for Validation Set')
 plt.show()
 
 # print classifivccatiopn table
-from sklearn.metrics import classification_report
 print(classification_report(y_test, y_pred))
 
 # draw confusion matrix for train data
