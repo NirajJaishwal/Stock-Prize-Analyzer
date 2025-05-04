@@ -28,11 +28,6 @@ from tensorflow.keras.optimizers import RMSprop
 df = yf.download('AAPL', start='2025-01-20', end='2025-03-10', interval='30m')
 # df = yf.download('AAPL', start='2025-01-01', end='2025-03-13', interval='60m')
 
-# import stock of Tesla
-# df = yf.download('TSLA', start='2025-01-20', end='2025-03-02', interval='30m')
-
-# save dataset as csv
-# df.to_csv('tesla_data.csv')
 df.to_csv('apple_data.csv')
 
 df.describe()
@@ -59,7 +54,6 @@ print(data.shape)
 features = ['Close', 'High', 'Low', 'Open', 'Volume']
 data = data[features]
 
-# include more features
 # include price change (returns)
 data['Returns'] = data['Close'].pct_change()
 
@@ -93,8 +87,8 @@ processed_data = data.dropna()
 
 print("Complete")
 
-"""Various features were implemented. After implementing the features, the data with null values were removed
-
+"""
+Various features were implemented. After implementing the features, the data with null values were removed
 Define a scalar to standardize the data
 """
 
@@ -124,6 +118,7 @@ features = ['Close', 'Open', 'High', 'Low', 'Volume', 'Returns', 'RSI', 'MACD', 
 
 # define a scalar
 scaler = MinMaxScaler(feature_range=(0, 1))
+
 # scaler = MinMaxScaler()
 scaled_data = scaler.fit_transform(processed_data[features])
 
@@ -178,17 +173,12 @@ model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accurac
 lr_scheduler = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=3, min_lr=0.0001)
 history = model.fit(X_train_real, y_train_real, epochs=20, batch_size=16, validation_data=(X_val, y_val), callbacks=[lr_scheduler])
 
-# fit the model with validation set
-# history = model.fit(X_train_real, y_train_real, epochs=15, batch_size = 18, validation_data=(X_val, y_val))
-# history = model.fit(X_train_real, y_train_real, epochs=20, batch_size = 16)
-
-
 # calculate the efficieny of the model
 val_loss, val_acc = model.evaluate(X_val, y_val)
 print("Validation Loss:", val_loss)
 print("Validation Accuracy:", val_acc)
 
-# save the mode
+# # save the mode
 # model.save('lstm_model.h5')
 # model.save("lstm_stock_model.keras")
 
@@ -261,75 +251,3 @@ plt.title('Model Loss')
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend(['Train', 'Validation'], loc='upper right')
-
-seq_length = 5
-
-data = df_scaled[['Close', 'Volume', 'SMA_50', 'SMA_200', 'RSI', 'Upper Band', 'Lower Band', 'ATR']].values
-
-X, y = create_sequences(data, seq_length)
-
-# Reshape X to be suitbale for LSTM
-X = X.reshape(X.shape[0], X.shape[1], len(features))
-
-# Split the data into train and testing
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Creating Training and validation set
-X_train_real, X_val, y_train_real, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
-print("Training set shape:", X_train_real.shape)
-print("Validation set shape:", X_val.shape)
-# print(X_train_real[1])
-print(y_train_real.shape)
-
-model = Sequential()
-model.add(LSTM(128, activation='tanh', return_sequences=True, input_shape=(X_train.shape[1], X_train.shape[2])))
-model.add(Dropout(0.3))  # Prevent overfitting
-model.add(LSTM(64, activation='tanh', return_sequences=True))
-model.add(Dropout(0.3))
-model.add(LSTM(32, activation='tanh'))
-model.add(Dense(1, activation='sigmoid'))
-optimizer = Adam(learning_rate = 0.0001)
-model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
-
-from sklearn.utils.class_weight import compute_class_weight
-import numpy as np
-
-# # Compute class weights for the training data
-# class_weights = compute_class_weight('balanced', classes=np.unique(y_train_real), y=y_train_real)
-# class_weight_dict = dict(enumerate(class_weights))
-
-# # Fit the model with class weights
-# history = model.fit(X_train_real, y_train_real, epochs=20, batch_size=12, validation_data=(X_val, y_val), class_weight=class_weight_dict)
-
-history = model.fit(X_train_real, y_train_real, epochs=20, batch_size = 16, validation_data=(X_val, y_val))
-
-val_loss, val_acc = model.evaluate(X_val, y_val)
-print("Validation Loss:", val_loss)
-print("Validation Accuracy:", val_acc)
-
-y_a_pred = (model.predict(X_train_real) > 0.5).astype(int)
-print(classification_report(y_train_real, y_a_pred))
-
-
-print(classification_report(y_test, y_pred))
-
-import matplotlib.pyplot as plt
-
-# Plot training & validation loss values
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Model Loss')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.legend(['Train', 'Validation'], loc='upper right')
-plt.show()
-
-# Plot training & validation accuracy values
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('Model Accuracy')
-plt.xlabel('Epochs')
-plt.ylabel('Accuracy')
-plt.legend(['Train', 'Validation'], loc='upper left')
-plt.show()
-
